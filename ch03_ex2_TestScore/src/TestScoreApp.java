@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class TestScoreApp {
@@ -12,6 +13,10 @@ public class TestScoreApp {
         int scoreTotal = 0;
         int scoreCount = 0;
         int testScore = 0;
+        int testScoreMin = 100;
+        int testScoreMax = 0;
+        int min = 0;
+        int max = 0;
         Scanner sc = new Scanner(System.in);
 
         // get a series of test scores from the user
@@ -23,23 +28,40 @@ public class TestScoreApp {
 
             // accumulate score count and score total
             if (testScore <= 100) {
-                scoreCount = scoreCount + 1;
-                scoreTotal = scoreTotal + testScore;
+                scoreCount++;
+                scoreTotal += testScore;
+                min = Math.min(testScoreMin, testScoreMax);
+                max = Math.max(testScoreMin, testScoreMax);
+
             }
             else if (testScore != 999) {
                 System.out.println("Invalid entry; not counted");
             }
-        }
 
+            // record minimum and maximum test scores
+            if (testScore <= 100 && testScore < testScoreMin) 
+            {
+                testScoreMin = testScore;
+            }
+            if (testScore <= 100 && testScore > testScoreMax)
+            {
+                testScoreMax = testScore;
+            }
+        }
         // display the score count, score total, and average score
         double averageScore = 0.0;
         if (scoreCount > 0) {
             averageScore = (double) scoreTotal / scoreCount;
         }
+        NumberFormat number = NumberFormat.getNumberInstance();
+        number.setMaximumFractionDigits(1);
+        String averageScoreString = number.format(averageScore);
         String message = "\n"
                 + "Score count:   " + scoreCount + "\n"
                 + "Score total:   " + scoreTotal + "\n"
-                + "Average score: " + averageScore + "\n";
+                + "Average score: " + averageScoreString + "\n"
+                + "Minimum score: " + min + "\n"
+                + "Maximum score: " + max + "\n";
         System.out.println(message);
     }
 }
